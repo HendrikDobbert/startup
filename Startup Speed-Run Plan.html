@@ -9,16 +9,25 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
         body { font-family: 'Inter', sans-serif; }
+        
+        /* Timeline Logic */
         .step-connector {
             position: absolute;
-            left: 2rem;
+            left: 1.5rem; /* Adjusted for mobile (was 2rem) */
             top: 3rem;
             bottom: -2rem;
             width: 4px;
             background: #e5e7eb;
             z-index: 0;
         }
+        @media (min-width: 768px) {
+            .step-connector {
+                left: 2rem;
+            }
+        }
+
         .step-active .step-connector { background: #3b82f6; }
+
         /* Modal Animation */
         #loiModal {
             transition: opacity 0.3s ease-in-out;
@@ -31,25 +40,40 @@
             opacity: 1;
             pointer-events: auto;
         }
+
+        /* Flow Arrows for Step 5 */
         .flow-arrow {
             position: relative;
         }
-        .flow-arrow::after {
-            content: '';
-            position: absolute;
-            right: -10px;
-            top: 50%;
-            transform: translateY(-50%);
-            border-left: 10px solid #cbd5e1;
-            border-top: 10px solid transparent;
-            border-bottom: 10px solid transparent;
-        }
-        @media (max-width: 768px) {
+        /* Desktop Arrow (Right) */
+        @media (min-width: 768px) {
             .flow-arrow::after {
-                right: 50%;
-                bottom: -20px;
-                top: auto;
-                transform: translateX(50%) rotate(90deg);
+                content: '';
+                position: absolute;
+                right: -14px;
+                top: 50%;
+                transform: translateY(-50%);
+                border-left: 10px solid #cbd5e1;
+                border-top: 10px solid transparent;
+                border-bottom: 10px solid transparent;
+                z-index: 10;
+            }
+        }
+        /* Mobile Arrow (Down) */
+        @media (max-width: 767px) {
+            .flow-arrow::after {
+                content: '';
+                position: absolute;
+                bottom: -18px;
+                left: 50%;
+                transform: translateX(-50%) rotate(90deg);
+                border-left: 10px solid #cbd5e1;
+                border-top: 10px solid transparent;
+                border-bottom: 10px solid transparent;
+                z-index: 10;
+            }
+            .flow-arrow {
+                margin-bottom: 2rem; /* Space for arrow */
             }
         }
     </style>
@@ -57,81 +81,89 @@
 <body class="bg-slate-50 text-slate-800">
 
     <!-- Header / Mission Briefing -->
-    <header class="bg-slate-900 text-white p-6 shadow-lg sticky top-0 z-50">
+    <header class="bg-slate-900 text-white p-4 md:p-6 shadow-lg sticky top-0 z-50">
         <div class="max-w-4xl mx-auto flex justify-between items-center">
             <div>
-                <div class="text-xs font-bold text-blue-400 uppercase tracking-widest">Unsere Mission</div>
-                <h1 class="text-2xl font-extrabold">Der "Speed-Run" Plan <span class="text-gray-500 text-lg font-normal">| Unser Weg zum Cash-Out</span></h1>
+                <div class="text-[10px] md:text-xs font-bold text-blue-400 uppercase tracking-widest">Unsere Mission</div>
+                <h1 class="text-lg md:text-2xl font-extrabold leading-tight">Der "Speed-Run" Plan <span class="block md:inline text-gray-500 text-sm md:text-lg font-normal">| Cash-Out</span></h1>
             </div>
             <div class="hidden md:block text-right">
                 <div class="text-sm text-gray-400">Teamstärke</div>
                 <div class="font-bold text-xl">5 Personen <i class="fas fa-users ml-2"></i></div>
             </div>
+            <!-- Mobile Team Icon -->
+            <div class="md:hidden text-right">
+                <div class="bg-slate-800 p-2 rounded-lg border border-slate-700">
+                    <i class="fas fa-users text-blue-400"></i> <span class="font-bold">5</span>
+                </div>
+            </div>
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto p-6 space-y-8 pb-24">
+    <main class="max-w-4xl mx-auto p-4 md:p-6 space-y-6 md:space-y-8 pb-24">
 
         <!-- THE TRAP ALERT -->
-        <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded shadow-sm flex items-start">
-            <div class="text-amber-500 text-2xl mr-4"><i class="fas fa-exclamation-triangle"></i></div>
+        <div class="bg-amber-50 border-l-4 border-amber-500 p-3 md:p-4 rounded shadow-sm flex items-start">
+            <div class="text-amber-500 text-xl md:text-2xl mr-3 md:mr-4 mt-1"><i class="fas fa-exclamation-triangle"></i></div>
             <div>
-                <h3 class="font-bold text-amber-900">Die Falle: Das Stipendien-Limit</h3>
-                <p class="text-amber-800 text-sm">Das Stipendium zahlt nur für max. 3 Personen. <strong>Wir sind aber 5.</strong> Das ist unser Plan, wie wir das lösen.</p>
+                <h3 class="font-bold text-amber-900 text-sm md:text-base">Die Falle: Das Stipendien-Limit</h3>
+                <p class="text-amber-800 text-xs md:text-sm leading-relaxed">Das Stipendium zahlt nur für max. 3 Personen. <strong>Wir sind aber 5.</strong> Das ist unser Plan, wie wir das lösen.</p>
             </div>
         </div>
 
         <!-- FAKTENCHECK NRW.BANK -->
-        <div class="bg-blue-50 border-l-4 border-blue-600 p-5 rounded shadow-sm">
-            <h3 class="font-bold text-blue-900 flex items-center">
-                <i class="fas fa-info-circle mr-2"></i> Realitäts-Check: Die NRW.Bank
+        <div class="bg-blue-50 border-l-4 border-blue-600 p-4 md:p-5 rounded shadow-sm">
+            <h3 class="font-bold text-blue-900 text-sm md:text-base flex items-center">
+                <i class="fas fa-info-circle mr-2"></i> Realitäts-Check: NRW.Bank
             </h3>
-            <div class="mt-2 text-sm text-blue-800 space-y-2">
+            <div class="mt-2 text-xs md:text-sm text-blue-800 space-y-2 leading-relaxed">
                 <p><strong>Das Missverständnis:</strong> Die Aussage über "Gründergehälter über 1.200 €".</p>
                 <p><strong>Die Realität:</strong> Das bezog sich nur auf das <em>Gründerstipendium</em>. Die Bank hat <strong>keinen zweiten Topf</strong> mit geschenktem Geld.</p>
-                <p class="bg-white p-2 rounded border border-blue-200 mt-2 font-bold text-red-600">
-                    <i class="fas fa-times-circle"></i> Es gibt KEIN "Extra-Gehalt" für uns (Person 4 & 5). Wir müssen das selbst holen.
-                </p>
+                <div class="bg-white p-2 rounded border border-blue-200 mt-2 font-bold text-red-600 flex items-start">
+                    <i class="fas fa-times-circle mt-0.5 mr-2 flex-shrink-0"></i> 
+                    <span>Es gibt KEIN "Extra-Gehalt" für Person 4 & 5. Wir müssen das selbst holen.</span>
+                </div>
             </div>
         </div>
 
-        <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-8 mb-4 border-b pb-2">Phase 1: Vorbereitung (Diesen Freitag)</div>
+        <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-6 md:mt-8 mb-2 border-b pb-2">Phase 1: Vorbereitung (Freitag)</div>
 
         <!-- SCHRITT 1: DAS 3+2 MODELL -->
-        <div class="relative pl-16">
-            <div class="absolute left-0 top-0 w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg z-10">1</div>
-            <div class="step-connector bg-blue-200"></div> <!-- Connector Line -->
+        <div class="relative pl-12 md:pl-16">
+            <!-- Number Circle -->
+            <div class="absolute left-0 top-0 w-10 h-10 md:w-12 md:h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg md:text-xl shadow-lg z-10">1</div>
+            <div class="step-connector bg-blue-200"></div> 
             
-            <div class="bg-white rounded-xl shadow-md p-6 border border-slate-200">
-                <h2 class="text-xl font-bold mb-4 flex items-center text-blue-900">
-                    Unser "3+2 Modell" (Sofort-Cashflow)
-                    <span class="ml-auto text-xs bg-green-100 text-green-800 py-1 px-3 rounded-full">Ziel: Alle 5 finanziert</span>
+            <div class="bg-white rounded-xl shadow-md p-4 md:p-6 border border-slate-200">
+                <h2 class="text-lg md:text-xl font-bold mb-4 flex flex-col md:flex-row md:items-center text-blue-900 leading-snug">
+                    Unser "3+2 Modell"
+                    <span class="mt-2 md:mt-0 md:ml-auto text-[10px] md:text-xs bg-green-100 text-green-800 py-1 px-3 rounded-full w-fit">Ziel: Alle 5 finanziert</span>
                 </h2>
                 
-                <div class="grid md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     <!-- Gruppe A -->
-                    <div class="bg-blue-50 rounded-lg p-5 border border-blue-100">
-                        <div class="flex justify-between items-center mb-3">
-                            <h3 class="font-bold text-blue-800"><i class="fas fa-graduation-cap mr-2"></i>Unsere 3 "Gründer"</h3>
-                            <span class="text-xs font-mono bg-blue-200 px-2 py-1 rounded">Stipendium</span>
+                    <div class="bg-blue-50 rounded-lg p-4 md:p-5 border border-blue-100">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-bold text-blue-800 text-sm md:text-base"><i class="fas fa-graduation-cap mr-2"></i>3 "Gründer"</h3>
+                            <span class="text-[10px] md:text-xs font-mono bg-blue-200 px-2 py-1 rounded">Stipendium</span>
                         </div>
-                        <p class="text-sm text-slate-600 mb-4">Das Kern-Team (z.B. CTO + 2), das offiziell den Antrag stellt.</p>
-                        <div class="bg-white p-3 rounded text-center border border-blue-100 shadow-sm">
-                            <div class="text-xs text-slate-500 uppercase">Unser sicheres Einkommen</div>
-                            <div class="text-xl font-bold text-blue-600">3.600 € / Monat</div>
+                        <p class="text-xs md:text-sm text-slate-600 mb-3">Das Kern-Team (offizieller Antrag).</p>
+                        <div class="bg-white p-2 md:p-3 rounded text-center border border-blue-100 shadow-sm">
+                            <div class="text-[10px] md:text-xs text-slate-500 uppercase">Sicheres Einkommen</div>
+                            <div class="text-lg md:text-xl font-bold text-blue-600">3.600 € / Mt.</div>
                         </div>
                     </div>
 
                     <!-- Gruppe B -->
-                    <div class="bg-indigo-50 rounded-lg p-5 border border-indigo-100">
-                        <div class="flex justify-between items-center mb-3">
-                            <h3 class="font-bold text-indigo-800"><i class="fas fa-briefcase mr-2"></i>Unsere 2 "Spezialisten"</h3>
-                            <span class="text-xs font-mono bg-indigo-200 px-2 py-1 rounded">Umsatz</span>
+                    <div class="bg-indigo-50 rounded-lg p-4 md:p-5 border border-indigo-100">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-bold text-indigo-800 text-sm md:text-base"><i class="fas fa-briefcase mr-2"></i>2 "Spezialisten"</h3>
+                            <span class="text-[10px] md:text-xs font-mono bg-indigo-200 px-2 py-1 rounded">Umsatz</span>
                         </div>
-                        <p class="text-sm text-slate-600 mb-4">Finanziert durch unser Spiegel 21 Pilotprojekt (Festpreis statt kostenlos).</p>
-                        <div class="bg-white p-3 rounded text-center border border-indigo-100 shadow-sm">
-                            <div class="text-xs text-slate-500 uppercase">Unser Projekt Ziel</div>
-                            <div class="text-xl font-bold text-indigo-600">5.000 € + 2k mtl.</div>
+                        <p class="text-xs md:text-sm text-slate-600 mb-3">Finanziert durch Spiegel 21 Pilotprojekt.</p>
+                        <div class="bg-white p-2 md:p-3 rounded text-center border border-indigo-100 shadow-sm">
+                            <div class="text-[10px] md:text-xs text-slate-500 uppercase">Unser Projekt Ziel</div>
+                            <div class="text-lg md:text-xl font-bold text-indigo-600">5k fix + 2k mtl.</div>
                         </div>
                     </div>
                 </div>
@@ -139,48 +171,48 @@
         </div>
 
         <!-- SCHRITT 2: NETZWERK -->
-        <div class="relative pl-16 pt-8">
-            <div class="absolute left-0 top-8 w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg z-10">2</div>
+        <div class="relative pl-12 md:pl-16 pt-6 md:pt-8">
+            <div class="absolute left-0 top-6 md:top-8 w-10 h-10 md:w-12 md:h-12 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg md:text-xl shadow-lg z-10">2</div>
             <div class="step-connector bg-slate-200"></div>
             
-            <div class="bg-white rounded-xl shadow-md p-6 border border-slate-200">
-                <h2 class="text-xl font-bold mb-4 text-purple-900">Wir nutzen den "Fast-Track"</h2>
-                <p class="text-slate-600 mb-2">Kein Papierkrieg. Wir nutzen unsere Siege als Hebel.</p>
-                <ul class="text-sm list-disc list-inside text-slate-500">
-                    <li><strong>HRW Incubator:</strong> Wir holen uns die Empfehlung (als Makerthon-Sieger).</li>
-                    <li><strong>Mentorin:</strong> Wir holen uns das "Go" zum Pitchdeck.</li>
+            <div class="bg-white rounded-xl shadow-md p-4 md:p-6 border border-slate-200">
+                <h2 class="text-lg md:text-xl font-bold mb-2 md:mb-4 text-purple-900">Wir nutzen den "Fast-Track"</h2>
+                <p class="text-xs md:text-sm text-slate-600 mb-2">Kein Papierkrieg. Wir nutzen unsere Siege als Hebel.</p>
+                <ul class="text-xs md:text-sm list-disc list-inside text-slate-500 space-y-1">
+                    <li><strong>HRW Incubator:</strong> Empfehlung holen (Makerthon-Sieger).</li>
+                    <li><strong>Mentorin:</strong> "Go" zum Pitchdeck holen.</li>
                 </ul>
             </div>
         </div>
 
         <!-- SCHRITT 3: INFRASTRUKTUR -->
-        <div class="relative pl-16 pt-8">
-            <div class="absolute left-0 top-8 w-12 h-12 bg-teal-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg z-10">3</div>
+        <div class="relative pl-12 md:pl-16 pt-6 md:pt-8">
+            <div class="absolute left-0 top-6 md:top-8 w-10 h-10 md:w-12 md:h-12 bg-teal-600 rounded-full flex items-center justify-center text-white font-bold text-lg md:text-xl shadow-lg z-10">3</div>
             <div class="step-connector bg-slate-200"></div>
             
-            <div class="bg-white rounded-xl shadow-md p-6 border border-slate-200 flex justify-between items-center">
+            <div class="bg-white rounded-xl shadow-md p-4 md:p-6 border border-slate-200 flex flex-col sm:flex-row justify-between sm:items-center gap-2">
                 <div>
-                    <h2 class="text-xl font-bold mb-1 text-teal-900">Büro & Labore</h2>
-                    <p class="text-slate-600 text-sm">Wirtschaftsförderung oder HRW nutzen.</p>
+                    <h2 class="text-lg md:text-xl font-bold mb-1 text-teal-900">Büro & Labore</h2>
+                    <p class="text-xs md:text-sm text-slate-600">Wirtschaftsförderung oder HRW nutzen.</p>
                 </div>
-                <div class="text-xl font-bold text-teal-600">0 € Miete</div>
+                <div class="text-xl md:text-2xl font-bold text-teal-600 self-end sm:self-auto">0 € Miete</div>
             </div>
         </div>
 
         <!-- SCHRITT 4: DER SCHLÜSSEL -->
-        <div class="relative pl-16 pt-8">
-            <div class="absolute left-0 top-8 w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg z-10 pulse-animation">4</div>
+        <div class="relative pl-12 md:pl-16 pt-6 md:pt-8">
+            <div class="absolute left-0 top-6 md:top-8 w-10 h-10 md:w-12 md:h-12 bg-red-600 rounded-full flex items-center justify-center text-white font-bold text-lg md:text-xl shadow-lg z-10 pulse-animation">4</div>
             <div class="step-connector bg-slate-300 border-l-2 border-dashed border-slate-400 opacity-50"></div>
             
-            <div class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-xl shadow-xl p-6 text-white border-l-8 border-red-500">
-                <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+            <div class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-xl shadow-xl p-4 md:p-6 text-white border-l-8 border-red-500">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div>
-                        <div class="text-red-400 font-bold uppercase tracking-wider text-xs mb-1">Diesen Freitag</div>
-                        <h2 class="text-2xl font-bold mb-2">Unser LoI-Deal</h2>
-                        <p class="text-gray-300 text-sm">Die Unterschrift, die beweist, dass wir Geld verdienen.</p>
+                        <div class="text-red-400 font-bold uppercase tracking-wider text-[10px] md:text-xs mb-1">Diesen Freitag</div>
+                        <h2 class="text-xl md:text-2xl font-bold mb-1">Unser LoI-Deal</h2>
+                        <p class="text-gray-300 text-xs md:text-sm">Die Unterschrift, die beweist, dass wir Geld verdienen.</p>
                     </div>
-                    <div class="mt-4 md:mt-0">
-                        <button onclick="openLoI()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow-lg text-sm flex items-center">
+                    <div class="w-full md:w-auto">
+                        <button onclick="openLoI()" class="w-full md:w-auto justify-center bg-red-600 hover:bg-red-700 text-white font-bold py-3 md:py-2 px-4 rounded shadow-lg text-sm flex items-center transition active:scale-95">
                             <i class="fas fa-file-signature mr-2"></i> Vorlage öffnen
                         </button>
                     </div>
@@ -188,44 +220,44 @@
             </div>
         </div>
 
-        <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-12 mb-4 border-b pb-2">Phase 2: Die Auszahlung (Unser Weg zum Geld)</div>
+        <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-10 md:mt-12 mb-2 border-b pb-2">Phase 2: Die Auszahlung</div>
 
         <!-- SCHRITT 5: DIE MACHTSTRUKTUR -->
-        <div class="relative pl-16 pt-4">
-            <div class="absolute left-0 top-4 w-12 h-12 bg-white border-2 border-slate-300 rounded-full flex items-center justify-center text-slate-500 font-bold text-xl z-10">5</div>
+        <div class="relative pl-12 md:pl-16 pt-4">
+            <div class="absolute left-0 top-4 w-10 h-10 md:w-12 md:h-12 bg-white border-2 border-slate-300 rounded-full flex items-center justify-center text-slate-500 font-bold text-lg md:text-xl z-10">5</div>
             <div class="step-connector bg-slate-200"></div>
 
-            <div class="bg-slate-50 rounded-xl p-6 border border-slate-200">
-                <h2 class="text-lg font-bold mb-4 text-slate-700">Der Behörden-Check (Wer entscheidet über uns?)</h2>
+            <div class="bg-slate-50 rounded-xl p-4 md:p-6 border border-slate-200">
+                <h2 class="text-base md:text-lg font-bold mb-4 text-slate-700">Der Behörden-Check (Entscheidungsfluss)</h2>
                 
                 <!-- Decision Flow Visualization -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-4 text-center">
                     
                     <!-- Player 1: Jury -->
-                    <div class="bg-white p-4 rounded shadow-sm border-b-4 border-green-500 flow-arrow md:mb-0 mb-4">
-                        <div class="text-2xl mb-2">🏛️</div>
+                    <div class="bg-white p-3 md:p-4 rounded shadow-sm border-b-4 border-green-500 flow-arrow mb-6 md:mb-0">
+                        <div class="text-xl md:text-2xl mb-1 md:mb-2">🏛️</div>
                         <div class="font-bold text-sm">1. Die Jury</div>
-                        <div class="text-xs text-slate-500 mb-2">(Gründernetzwerk)</div>
-                        <div class="bg-green-100 text-green-800 text-xs font-bold py-1 px-2 rounded inline-block">Macht: 90%</div>
-                        <p class="text-xs mt-2 text-left text-slate-600">Entscheidet, ob unsere Idee gut ist. Hier müssen wir pitchen. Ein "JA" hier ist entscheidend.</p>
+                        <div class="text-[10px] md:text-xs text-slate-500 mb-2">(Gründernetzwerk)</div>
+                        <div class="bg-green-100 text-green-800 text-[10px] md:text-xs font-bold py-1 px-2 rounded inline-block">Macht: 90%</div>
+                        <p class="text-[10px] md:text-xs mt-2 text-left text-slate-600">Entscheidet über Idee. Ein "JA" ist hier entscheidend.</p>
                     </div>
 
                     <!-- Player 2: PtJ -->
-                    <div class="bg-white p-4 rounded shadow-sm border-b-4 border-blue-500 flow-arrow md:mb-0 mb-4">
-                        <div class="text-2xl mb-2">📋</div>
-                        <div class="font-bold text-sm">2. Projektträger Jülich</div>
-                        <div class="text-xs text-slate-500 mb-2">(Der Verwalter)</div>
-                        <div class="bg-blue-100 text-blue-800 text-xs font-bold py-1 px-2 rounded inline-block">Macht: 10%</div>
-                        <p class="text-xs mt-2 text-left text-slate-600">Prüft unsere Formalien. Entscheidet NICHT über die Idee.</p>
+                    <div class="bg-white p-3 md:p-4 rounded shadow-sm border-b-4 border-blue-500 flow-arrow mb-6 md:mb-0">
+                        <div class="text-xl md:text-2xl mb-1 md:mb-2">📋</div>
+                        <div class="font-bold text-sm">2. Projektträger</div>
+                        <div class="text-[10px] md:text-xs text-slate-500 mb-2">(Der Verwalter)</div>
+                        <div class="bg-blue-100 text-blue-800 text-[10px] md:text-xs font-bold py-1 px-2 rounded inline-block">Macht: 10%</div>
+                        <p class="text-[10px] md:text-xs mt-2 text-left text-slate-600">Prüft Formalien. Entscheidet NICHT über Idee.</p>
                     </div>
 
                     <!-- Player 3: Ministerium -->
-                    <div class="bg-white p-4 rounded shadow-sm border-b-4 border-yellow-500">
-                        <div class="text-2xl mb-2">💰</div>
+                    <div class="bg-white p-3 md:p-4 rounded shadow-sm border-b-4 border-yellow-500">
+                        <div class="text-xl md:text-2xl mb-1 md:mb-2">💰</div>
                         <div class="font-bold text-sm">3. Land NRW</div>
-                        <div class="text-xs text-slate-500 mb-2">(Der Geldgeber)</div>
-                        <div class="bg-yellow-100 text-yellow-800 text-xs font-bold py-1 px-2 rounded inline-block">Auszahlung</div>
-                        <p class="text-xs mt-2 text-left text-slate-600">Das Geld kommt aus der Landeskasse direkt auf unser Konto.</p>
+                        <div class="text-[10px] md:text-xs text-slate-500 mb-2">(Der Geldgeber)</div>
+                        <div class="bg-yellow-100 text-yellow-800 text-[10px] md:text-xs font-bold py-1 px-2 rounded inline-block">Auszahlung</div>
+                        <p class="text-[10px] md:text-xs mt-2 text-left text-slate-600">Geld kommt direkt aus Landeskasse auf unser Konto.</p>
                     </div>
 
                 </div>
@@ -233,72 +265,92 @@
         </div>
 
         <!-- SCHRITT 6: ANTRAG -->
-        <div class="relative pl-16 pt-8">
-            <div class="absolute left-0 top-8 w-12 h-12 bg-white border-2 border-slate-300 rounded-full flex items-center justify-center text-slate-500 font-bold text-xl z-10">6</div>
+        <div class="relative pl-12 md:pl-16 pt-6 md:pt-8">
+            <div class="absolute left-0 top-6 md:top-8 w-10 h-10 md:w-12 md:h-12 bg-white border-2 border-slate-300 rounded-full flex items-center justify-center text-slate-500 font-bold text-lg md:text-xl z-10">6</div>
             <div class="step-connector bg-slate-200"></div>
 
-            <div class="bg-slate-50 rounded-xl p-6 border border-slate-200 flex items-center">
-                 <div class="text-2xl mr-4 text-blue-400"><i class="fas fa-envelope-open-text"></i></div>
+            <div class="bg-slate-50 rounded-xl p-4 md:p-6 border border-slate-200 flex items-start md:items-center">
+                 <div class="text-xl md:text-2xl mr-3 md:mr-4 text-blue-400 mt-1 md:mt-0"><i class="fas fa-envelope-open-text"></i></div>
                  <div>
-                    <h3 class="font-bold text-slate-700">Der Upload (Jülich Portal)</h3>
-                    <p class="text-sm text-slate-600">Nach dem Pitch bekommen wir das Empfehlungsschreiben. Das laden wir online hoch. Dann heißt es 2-3 Wochen warten.</p>
+                    <h3 class="font-bold text-slate-700 text-sm md:text-base">Der Upload (Jülich Portal)</h3>
+                    <p class="text-xs md:text-sm text-slate-600">Empfehlung hochladen. 2-3 Wochen warten.</p>
                  </div>
             </div>
         </div>
 
         <!-- SCHRITT 7: PAYDAY -->
-        <div class="relative pl-16 pt-8">
-            <div class="absolute left-0 top-8 w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-lg z-10 animate-bounce">7</div>
+        <div class="relative pl-12 md:pl-16 pt-6 md:pt-8">
+            <div class="absolute left-0 top-6 md:top-8 w-10 h-10 md:w-12 md:h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold text-lg md:text-xl shadow-lg z-10 animate-bounce">7</div>
+            <div class="step-connector bg-slate-200"></div>
             
-            <div class="bg-gradient-to-br from-green-50 to-emerald-100 rounded-xl shadow-lg p-6 border border-green-200">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-2xl font-extrabold text-green-800">UNSER PAYDAY</h2>
-                    <i class="fas fa-coins text-3xl text-green-600"></i>
+            <div class="bg-gradient-to-br from-green-50 to-emerald-100 rounded-xl shadow-lg p-4 md:p-6 border border-green-200">
+                <div class="flex justify-between items-center mb-3 md:mb-4">
+                    <h2 class="text-lg md:text-2xl font-extrabold text-green-800">UNSER PAYDAY</h2>
+                    <i class="fas fa-coins text-2xl md:text-3xl text-green-600"></i>
                 </div>
                 
-                <div class="space-y-4">
+                <div class="space-y-3 md:space-y-4">
                     <!-- Cash Stream 1 -->
-                    <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-blue-500 flex justify-between items-center">
+                    <div class="bg-white p-3 md:p-4 rounded-lg shadow-sm border-l-4 border-blue-500 flex justify-between items-center">
                         <div>
-                            <div class="font-bold text-slate-700">Stipendium (Rückwirkend)</div>
-                            <div class="text-xs text-slate-500">Für unsere 3 Gründer</div>
+                            <div class="font-bold text-slate-700 text-sm md:text-base">Stipendium</div>
+                            <div class="text-[10px] md:text-xs text-slate-500">3 Gründer (rückwirkend)</div>
                         </div>
-                        <div class="font-mono font-bold text-lg text-blue-600">+ 3.600 €</div>
+                        <div class="font-mono font-bold text-base md:text-lg text-blue-600">+ 3.600 €</div>
                     </div>
                     
                     <!-- Cash Stream 2 -->
-                    <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-indigo-500 flex justify-between items-center">
+                    <div class="bg-white p-3 md:p-4 rounded-lg shadow-sm border-l-4 border-indigo-500 flex justify-between items-center">
                         <div>
-                            <div class="font-bold text-slate-700">Rechnung Spiegel 21</div>
-                            <div class="text-xs text-slate-500">Setup-Gebühr (Netto)</div>
+                            <div class="font-bold text-slate-700 text-sm md:text-base">Spiegel 21</div>
+                            <div class="text-[10px] md:text-xs text-slate-500">Setup-Gebühr (Netto)</div>
                         </div>
-                        <div class="font-mono font-bold text-lg text-indigo-600">+ 5.000 €</div>
+                        <div class="font-mono font-bold text-base md:text-lg text-indigo-600">+ 5.000 €</div>
                     </div>
 
                     <div class="border-t border-green-200 pt-3 mt-2 flex justify-between items-center">
-                        <div class="font-bold text-green-900 uppercase tracking-wider text-sm">Unsere Gesamt-Liquidität</div>
-                        <div class="font-black text-3xl text-green-700">8.600 €</div>
+                        <div class="font-bold text-green-900 uppercase tracking-wider text-xs md:text-sm">Gesamt-Liquidität</div>
+                        <div class="font-black text-xl md:text-3xl text-green-700">8.600 €</div>
                     </div>
-                    <p class="text-xs text-center text-green-700 mt-2">Damit können wir alle 5 Personen bezahlen und die Miete decken.</p>
+                    <p class="text-[10px] md:text-xs text-center text-green-700 mt-2">Jetzt können wir alle 5 bezahlen.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PHASE 3: DER BOOSTER -->
+        <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-10 md:mt-12 mb-2 border-b pb-2">Phase 3: Der Booster (Dezember)</div>
+
+        <div class="relative pl-12 md:pl-16 pt-4">
+            <div class="absolute left-0 top-4 w-10 h-10 md:w-12 md:h-12 bg-pink-100 border-2 border-pink-300 rounded-full flex items-center justify-center text-pink-600 font-bold text-lg md:text-xl z-10">8</div>
+            
+            <div class="bg-gradient-to-r from-pink-50 to-white rounded-xl p-4 md:p-6 border border-pink-200 shadow-sm relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10 text-pink-900 text-6xl"><i class="fas fa-rocket"></i></div>
+                
+                <h2 class="text-base md:text-lg font-bold mb-2 text-pink-900">Termin Constanze Schweizer</h2>
+                <div class="flex flex-col md:flex-row gap-4 md:gap-6">
+                    <div class="flex-1">
+                        <h4 class="font-bold text-xs md:text-sm text-pink-700 uppercase mb-1">Strategie</h4>
+                        <p class="text-xs md:text-sm text-slate-600">Nicht betteln, sondern klotzen. Wir zeigen Umsatz und Stipendium, um Zugang zu Investoren zu kriegen.</p>
+                    </div>
                 </div>
             </div>
         </div>
 
     </main>
 
-    <!-- MODAL FÜR LoI (Gleicher Code wie zuvor) -->
+    <!-- MODAL FÜR LoI -->
     <div id="loiModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 backdrop-blur-sm p-4">
         <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div class="bg-slate-900 text-white p-5 flex justify-between items-center sticky top-0">
-                <h3 class="text-lg font-bold"><i class="fas fa-file-contract mr-2"></i> Letter of Intent (LoI)</h3>
-                <button onclick="closeLoI()" class="text-slate-400 hover:text-white transition"><i class="fas fa-times text-xl"></i></button>
+            <div class="bg-slate-900 text-white p-4 md:p-5 flex justify-between items-center sticky top-0">
+                <h3 class="text-base md:text-lg font-bold"><i class="fas fa-file-contract mr-2"></i> Letter of Intent</h3>
+                <button onclick="closeLoI()" class="text-slate-400 hover:text-white transition w-8 h-8 flex items-center justify-center"><i class="fas fa-times text-xl"></i></button>
             </div>
-            <div class="p-6">
-                <div class="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6 rounded text-sm text-amber-900">
-                    <p class="font-bold mb-1"><i class="fas fa-bullhorn mr-1"></i> WICHTIG FÜR UNS:</p>
-                    <p>Dieser Zettel finanziert unsere 2 Leute, die kein Stipendium bekommen. Ohne diesen Zettel haben wir eine Finanzierungslücke!</p>
+            <div class="p-4 md:p-6">
+                <div class="bg-amber-50 border-l-4 border-amber-500 p-3 md:p-4 mb-4 md:mb-6 rounded text-xs md:text-sm text-amber-900">
+                    <p class="font-bold mb-1"><i class="fas fa-bullhorn mr-1"></i> WICHTIG:</p>
+                    <p>Dieser Zettel finanziert Person 4 & 5. Ohne ihn haben wir ein Loch!</p>
                 </div>
-                <div class="bg-slate-50 p-6 rounded-lg border border-slate-200 font-mono text-sm leading-relaxed relative group">
+                <div class="bg-slate-50 p-4 md:p-6 rounded-lg border border-slate-200 font-mono text-xs md:text-sm leading-relaxed relative group">
                     <button onclick="copyToClipboard()" class="absolute top-2 right-2 bg-white border border-slate-300 hover:bg-blue-50 text-slate-600 px-3 py-1 rounded text-xs shadow-sm flex items-center">
                         <i class="fas fa-copy mr-1"></i> Kopieren
                     </button>
@@ -314,9 +366,9 @@
                     </div>
                 </div>
             </div>
-            <div class="p-5 border-t border-slate-100 flex justify-end bg-slate-50 rounded-b-xl">
-                <button onclick="closeLoI()" class="px-5 py-2 bg-white border border-slate-300 text-slate-700 rounded hover:bg-slate-50 mr-2 transition">Schließen</button>
-                <button onclick="printLoI()" class="px-5 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 shadow-md transition flex items-center"><i class="fas fa-print mr-2"></i> Drucken</button>
+            <div class="p-4 md:p-5 border-t border-slate-100 flex justify-end bg-slate-50 rounded-b-xl">
+                <button onclick="closeLoI()" class="px-4 py-2 bg-white border border-slate-300 text-slate-700 rounded hover:bg-slate-50 mr-2 text-sm transition">Schließen</button>
+                <button onclick="printLoI()" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 shadow-md text-sm transition flex items-center"><i class="fas fa-print mr-2"></i> Drucken</button>
             </div>
         </div>
     </div>
@@ -331,7 +383,7 @@
         function printLoI() {
             const printContent = document.getElementById('loiText').innerHTML;
             const originalContent = document.body.innerHTML;
-            document.body.innerHTML = `<div style="padding: 40px; font-family: sans-serif; max-width: 800px; margin: 0 auto;">${printContent}</div>`;
+            document.body.innerHTML = `<div style="padding: 20px; font-family: sans-serif; max-width: 100%; margin: 0 auto;">${printContent}</div>`;
             window.print();
             document.body.innerHTML = originalContent;
             setTimeout(() => location.reload(), 1000);
